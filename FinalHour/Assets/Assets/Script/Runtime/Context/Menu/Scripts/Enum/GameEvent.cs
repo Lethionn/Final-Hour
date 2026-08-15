@@ -15,6 +15,8 @@ namespace Assets.Script.Runtime.Context.Menu.Scripts.Enum
     TutorialStepComplete,
     SpeedTutorial,
     Hover,
-    Click
+    Click,
+    ShowLoading,
+    HideLoading
   }
 }

@@ -24,6 +24,7 @@ namespace Assets.Script.Runtime.Context.Menu.Scripts.Config
       OptionsModuleConfigurator.All(this);
 
       injectionBinder.Bind<ISpeedModel>().To<SpeedModel>().ToSingleton();
+      injectionBinder.Bind<IPlayerModel>().To<PlayerModel>().ToSingleton();
 
       mediationBinder.Bind<AudioManagerView>().To<AudioManagerMediator>();
       mediationBinder.Bind<MenuControllerView>().To<MenuControllerMediator>();

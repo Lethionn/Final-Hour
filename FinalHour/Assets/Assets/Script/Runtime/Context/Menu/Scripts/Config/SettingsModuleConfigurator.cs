@@ -6,6 +6,7 @@ using Assets.Script.Runtime.Context.Menu.Scripts.View;
 using Assets.Script.Runtime.Context.Menu.Scripts.View.ControlsPanel;
 using Assets.Script.Runtime.Context.Menu.Scripts.View.CreditsPanel;
 using Assets.Script.Runtime.Context.Menu.Scripts.View.InstructionsPanel;
+using Assets.Script.Runtime.Context.Menu.Scripts.View.LoadingPanel;
 using Assets.Script.Runtime.Context.Menu.Scripts.View.OptionsPanel;
 using Assets.Script.Runtime.Context.Menu.Scripts.View.SettingsPanel;
 using strange.extensions.context.impl;
@@ -25,6 +26,7 @@ namespace Assets.Script.Runtime.Context.Menu.Scripts.Config
       context.mediationBinder.Bind<ControlsPanelView>().To<ControlsPanelMediator>();
       context.mediationBinder.Bind<SettingsPanelView>().To<SettingsPanelMediator>();
       context.mediationBinder.Bind<ButtonSoundView>().To<ButtonSoundMediator>();
+      context.mediationBinder.Bind<LoadingPanelView>().To<LoadingPanelMediator>();
 
       context.commandBinder.Bind(GameEvent.OptionsPanel).To<OpenOptionsCommand>();
       context.commandBinder.Bind(GameEvent.Exit).To<ExitCommand>();

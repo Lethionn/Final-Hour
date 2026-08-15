@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Assets.Script.Runtime.Context.Game.Scripts.Enum;
 using Assets.Script.Runtime.Context.Menu.Scripts.Enum;
 using strange.extensions.context.api;
 using strange.extensions.dispatcher.eventdispatcher.api;
@@ -12,12 +11,16 @@ namespace Assets.Script.Runtime.Context.Menu.Scripts.Model
 {
   public class UIModel : IUIModel
   {
+    [Inject(ContextKeys.CONTEXT_DISPATCHER)]
+    public IEventDispatcher dispatcher { get; set; }
+    
     public Dictionary<GameObject, string> openPanels { get; } = new();
 
     public void OpenPanel(string panelKey, Transform layer)
     {
       if (openPanels.All(obj => obj.Value != panelKey))
       {
+        dispatcher.Dispatch(GameEvent.ShowLoading);
         Addressables.InstantiateAsync(panelKey).Completed += handle => PanelOpened(handle, layer, panelKey);
       }
       else
@@ -28,6 +31,7 @@ namespace Assets.Script.Runtime.Context.Menu.Scripts.Model
     
     private void PanelOpened(AsyncOperationHandle<GameObject> handle, Transform layer, string panelKey)
     {
+      dispatcher.Dispatch(GameEvent.HideLoading);
       if (handle.Status != AsyncOperationStatus.Succeeded) return;
       GameObject panel = handle.Result;
       openPanels.Add(panel, panelKey);
@@ -42,6 +46,7 @@ namespace Assets.Script.Runtime.Context.Menu.Scripts.Model
     {
       if (openPanels.All(obj => obj.Value != panelKey)) return;
       {
+        dispatcher.Dispatch(GameEvent.Click);
         (GameObject key, _) = openPanels.FirstOrDefault(obj => obj.Value ==  panelKey);
         Object.Destroy(key);
         openPanels.Remove(key);

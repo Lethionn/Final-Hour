@@ -13,6 +13,7 @@ using Assets.Script.Runtime.Context.Game.Scripts.View.Obstacles;
 using Assets.Script.Runtime.Context.Game.Scripts.View.PlayerController;
 using Assets.Script.Runtime.Context.Game.Scripts.View.Spawner;
 using Assets.Script.Runtime.Context.Menu.Scripts.Config;
+using Assets.Script.Runtime.Context.Menu.Scripts.View.LoadingPanel;
 using strange.extensions.context.api;
 using strange.extensions.context.impl;
 using UnityEngine;
