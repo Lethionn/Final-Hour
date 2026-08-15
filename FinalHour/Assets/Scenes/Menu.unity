@@ -5331,7 +5331,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1400644683
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 50
   m_RenderMode: 4
   m_MeshDistribution: 0
@@ -10411,7 +10411,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1400644683
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 50
   m_RenderMode: 4
   m_MeshDistribution: 0
@@ -10525,7 +10525,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1400644683
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: -50
   m_RenderMode: 1
   m_MeshDistribution: 0
@@ -25082,6 +25082,108 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 845465598}
   m_CullTransparentMesh: 1
+--- !u!1001 &892474331
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1129488744}
+    m_Modifications:
+    - target: {fileID: 1367041895560287906, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+      propertyPath: m_Name
+      value: LoadingPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200900802785778992, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200900802785778992, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200900802785778992, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200900802785778992, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200900802785778992, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200900802785778992, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200900802785778992, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200900802785778992, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200900802785778992, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200900802785778992, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200900802785778992, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200900802785778992, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200900802785778992, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200900802785778992, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200900802785778992, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200900802785778992, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200900802785778992, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200900802785778992, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200900802785778992, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200900802785778992, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+--- !u!224 &892474332 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7200900802785778992, guid: e8a68525dfa0f164eaadf5eefad41eb7, type: 3}
+  m_PrefabInstance: {fileID: 892474331}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &986494853 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6890701532305669132, guid: 80b6adb27ff0bfd4daa7c84dbd1795ab, type: 3}
@@ -25316,6 +25418,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4382708639747372574, guid: 178dd5acf75c821468b1853295edb489, type: 3}
       insertIndex: -1
       addedObject: {fileID: 986494853}
+    - targetCorrespondingSourceObject: {fileID: 4382708639747372574, guid: 178dd5acf75c821468b1853295edb489, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 892474332}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4382708639747372573, guid: 178dd5acf75c821468b1853295edb489, type: 3}
       insertIndex: -1
@@ -30602,7 +30707,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1400644683
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: -50
   m_RenderMode: 4
   m_MeshDistribution: 0

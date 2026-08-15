@@ -30,7 +30,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -88,11 +87,11 @@ MonoBehaviour:
     minHeight: 270
     maxHeight: 270
   - obj: {fileID: 8032858546369814456, guid: c00229f13708a324bb9b8fa000a1e806, type: 3}
-    weight: 5
+    weight: 3
     minHeight: 250
     maxHeight: 250
   - obj: {fileID: 8032858546369814456, guid: b69db755fbe20794eaf549c99fa3dac1, type: 3}
-    weight: 2.5
+    weight: 1
     minHeight: 250
     maxHeight: 250
   tutorialObjects:
@@ -100,3 +99,4 @@ MonoBehaviour:
   - {fileID: 8497182741174021961, guid: a3afafd70e3b9a547b6cd3b53c2e1c9e, type: 3}
   - {fileID: 550066902203417223, guid: 62f21c1ff50ca0d4f81c825314cb52d3, type: 3}
   - {fileID: 3626357716841573596, guid: a210c514a65a2cc4283e7ee4d24217f1, type: 3}
+  debugText: {fileID: 0}
