@@ -48,6 +48,7 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.Model
         sfxSource.volume = volume;
       }
 
+      uiSource.volume = volume;
       deathSoundSource.volume = volume;
       timeSpeedSource.volume = volume;
     }
@@ -78,6 +79,12 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.Model
     
     public void ResetPitchVolume()
     { 
+      musicSource.mute = PlayerPrefs.GetInt(SettingKeys.MuteMusic) > 0;
+      timeSpeedSource.mute = PlayerPrefs.GetInt(SettingKeys.MuteSfx) > 0;
+      deathSoundSource.mute = PlayerPrefs.GetInt(SettingKeys.MuteSfx) > 0;
+      sfxSource.mute = PlayerPrefs.GetInt(SettingKeys.MuteSfx) > 0;
+      uiSource.mute = PlayerPrefs.GetInt(SettingKeys.MuteSfx) > 0;
+      
       if (!PlayerPrefs.HasKey(SettingKeys.MusicVolume))
       {
         PlayerPrefs.SetFloat(SettingKeys.MusicVolume, GameMechanicSettings.DefaultMusicVolume);
@@ -88,14 +95,14 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.Model
         PlayerPrefs.SetFloat(SettingKeys.SfxVolume, GameMechanicSettings.DefaultSfxVolume);
       }
       
-      if (!PlayerPrefs.HasKey(SettingKeys.MusicOn))
+      if (!PlayerPrefs.HasKey(SettingKeys.MuteMusic))
       {
-        PlayerPrefs.SetInt(SettingKeys.MusicOn, 1);
+        PlayerPrefs.SetInt(SettingKeys.MuteMusic, 0);
       }
       
-      if (!PlayerPrefs.HasKey(SettingKeys.SfxOn))
+      if (!PlayerPrefs.HasKey(SettingKeys.MuteSfx))
       {
-        PlayerPrefs.SetInt(SettingKeys.SfxOn, 1);
+        PlayerPrefs.SetInt(SettingKeys.MuteSfx, 0);
       }
       
       musicSource.volume = PlayerPrefs.GetFloat(SettingKeys.MusicVolume);
@@ -104,41 +111,45 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.Model
       sfxSource.volume = PlayerPrefs.GetFloat(SettingKeys.SfxVolume);
       sfxSource.pitch = 1;
       
+      uiSource.volume = PlayerPrefs.GetFloat(SettingKeys.SfxVolume);
+      deathSoundSource.volume = PlayerPrefs.GetFloat(SettingKeys.SfxVolume);
+      timeSpeedSource.volume = PlayerPrefs.GetFloat(SettingKeys.SfxVolume);
+      
       _scaledMusicVolume = false;
       _scaledSfxVolume = false;
     }
 
     public void ToggleMusic()
     {
-      if (PlayerPrefs.GetInt(SettingKeys.MusicOn) > 0)
+      if (PlayerPrefs.GetInt(SettingKeys.MuteMusic) < 1)
       {
-        musicSource.enabled = false;
-        PlayerPrefs.SetInt(SettingKeys.MusicOn, 0);
+        musicSource.mute = true;
+        PlayerPrefs.SetInt(SettingKeys.MuteMusic, 1);
       }
       else
       {
-        musicSource.enabled = true;
-        PlayerPrefs.SetInt(SettingKeys.MusicOn, 1);
+        musicSource.mute = false;
+        PlayerPrefs.SetInt(SettingKeys.MuteMusic, 0);
       }
     }
 
     public void ToggleSfx()
     {
-      if (PlayerPrefs.GetInt(SettingKeys.SfxOn) > 0)
+      if (PlayerPrefs.GetInt(SettingKeys.MuteSfx) < 1)
       {
-        timeSpeedSource.enabled = false;
-        deathSoundSource.enabled = false;
-        sfxSource.enabled = false;
-        uiSource.enabled = false;
-        PlayerPrefs.SetInt(SettingKeys.SfxOn, 0);
+        timeSpeedSource.mute = true;
+        deathSoundSource.mute = true;
+        sfxSource.mute = true;
+        uiSource.mute = true;
+        PlayerPrefs.SetInt(SettingKeys.MuteSfx, 1);
       }
       else
       {
-        timeSpeedSource.enabled = true;
-        deathSoundSource.enabled = true;
-        sfxSource.enabled = true;
-        uiSource.enabled = true;
-        PlayerPrefs.SetInt(SettingKeys.SfxOn, 1);
+        timeSpeedSource.mute = false;
+        deathSoundSource.mute = false;
+        sfxSource.mute = false;
+        uiSource.mute = false;
+        PlayerPrefs.SetInt(SettingKeys.MuteSfx, 0);
       }
     }
 
@@ -162,13 +173,13 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.Model
     
     public void Resume()
     {
-      musicSource.Play();
+      musicSource.UnPause();
       
-      sfxSource.Play();
+      sfxSource.UnPause();
       
-      timeSpeedSource.Play();
+      timeSpeedSource.UnPause();
       
-      deathSoundSource.Play();
+      deathSoundSource.UnPause();
     }
   }
 }
