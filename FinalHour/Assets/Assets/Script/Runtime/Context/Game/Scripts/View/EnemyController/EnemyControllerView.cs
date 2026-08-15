@@ -17,6 +17,7 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.EnemyController
     public SpriteRenderer spriteRenderer;
     
     public Animator enemyAnimator;
+    public GameObject deadParticle;
 
     [HideInInspector]
     public float speed = -9999f;
@@ -108,7 +109,8 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.EnemyController
     public void KillAnimation()
     {
       enemyAnimator.SetTrigger("Catch");
-
+      deadParticle.SetActive(true);
+      
       transform.DOBlendableMoveBy(new Vector3(0, 10, 0), 2).SetDelay(1.75f);
       spriteRenderer.DOColor(new Color(0.35f, 0.35f, 0.35f), 1f).SetDelay(1.5f);
       spriteRenderer.DOColor(new Color(0f, 0f, 0f, 0f), 1f).SetDelay(1.75f);    

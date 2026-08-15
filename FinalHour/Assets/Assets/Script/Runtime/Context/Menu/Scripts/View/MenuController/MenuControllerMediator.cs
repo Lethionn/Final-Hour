@@ -1,6 +1,8 @@
 ﻿using Assets.Script.Runtime.Context.Game.Scripts.Enum;
 using Assets.Script.Runtime.Context.Menu.Scripts.Enum;
+using Assets.Script.Runtime.Context.Menu.Scripts.Model;
 using strange.extensions.mediation.impl;
+using UnityEngine;
 
 namespace Assets.Script.Runtime.Context.Menu.Scripts.View.MenuController
 {
@@ -15,6 +17,9 @@ namespace Assets.Script.Runtime.Context.Menu.Scripts.View.MenuController
   {
     [Inject]
     public MenuControllerView view { get; set; }
+    
+    [Inject]
+    public IUIModel uiModel { get; set; }
 
     public override void OnRegister()
     {
@@ -32,6 +37,12 @@ namespace Assets.Script.Runtime.Context.Menu.Scripts.View.MenuController
 
     public override void OnInitialize()
     {
+      view.SetOptionsAction();
+      
+      if (!PlayerPrefs.HasKey(SettingKeys.TiltSensitivity))
+      {
+        PlayerPrefs.SetFloat(SettingKeys.TiltSensitivity, GameMechanicSettings.DefaultSensitivity);
+      }
       dispatcher.Dispatch(GameEvent.Menu);
     }
 
@@ -42,9 +53,15 @@ namespace Assets.Script.Runtime.Context.Menu.Scripts.View.MenuController
 
     public void OnSettings()
     {
+      if (uiModel.openPanels.Count > 1)
+      {
+        return;
+      }
+      
       view.shadow.SetActive(true);
       dispatcher.Dispatch(GameEvent.OptionsPanel, transform);
     }
+    
     
     public void OnContinue()
     { 
@@ -53,6 +70,8 @@ namespace Assets.Script.Runtime.Context.Menu.Scripts.View.MenuController
 
     public override void OnRemove()
     {
+      view.RemoveOptionsAction();
+      
       view.dispatcher.RemoveListener(MenuControllerEvent.Press, OnPress);
       view.dispatcher.RemoveListener(MenuControllerEvent.Settings, OnSettings);
       view.dispatcher.RemoveListener(MenuControllerEvent.SoundSettings, OnSoundSettings);

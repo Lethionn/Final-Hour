@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using strange.extensions.mediation.impl;
+using TMPro;
 using UnityEngine;
 
 namespace Assets.Script.Runtime.Context.Game.Scripts.View.Spawner
@@ -21,5 +22,7 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.Spawner
     public List<WeightedObject> weightedObjects;
     
     public List<GameObject> tutorialObjects;
+
+    public TextMeshProUGUI debugText;
   }
 }

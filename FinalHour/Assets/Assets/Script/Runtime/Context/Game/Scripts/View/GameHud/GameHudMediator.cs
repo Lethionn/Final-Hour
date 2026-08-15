@@ -76,6 +76,8 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.GameHud
 
     public override void OnInitialize()
     {
+      view.SetOptionsAction();
+      
       if (!PlayerPrefs.HasKey(SettingKeys.FirstTime))
       {
         speedModel.Pause();
@@ -137,7 +139,7 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.GameHud
         view.timeBarFill.color = new Color(1f, 0.2290596f, 0.1650943f);
       }
 
-      if (playerModel.tutorialActive && PlayerPrefs.GetInt(SettingKeys.CompletedTutorialSteps) == 7 && playerModel.remainingTime <= 50)
+      if (playerModel.tutorialActive && PlayerPrefs.GetInt(SettingKeys.CompletedTutorialSteps) == 7 && playerModel.remainingTime <= 40)
       {
         dispatcher.Dispatch(GameEvent.SpeedTutorial);
       }
@@ -334,6 +336,11 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.GameHud
 
     private void OnSettings()
     {
+      if (uiModel.openPanels.Count > 1)
+      {
+        return;
+      }
+      
       dispatcher.Dispatch(GameEvent.OptionsPanel, transform);
     }
 
@@ -452,7 +459,7 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.GameHud
             view.timerTransform.SetSiblingIndex(4);
             view.timeBarTransform.SetSiblingIndex(7);
             view.timerTutorialArrow.SetActive(false);
-            view.pcTutorialText.text = "<color=#574646>Death</color> closes the distance when you Slow Down. Hold [D] to Speed Up time and maintain your distance";
+            view.pcTutorialText.text = "<color=#735858>Death</color> closes the distance when you Slow Down. Hold [D] to Speed Up time and maintain your distance";
             view.deathTutorialArrow.SetActive(true);
             view.shadowTransform.SetSiblingIndex(transform.childCount - 3);
             break;
@@ -461,7 +468,7 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.GameHud
             view.deathTutorialArrow.SetActive(false);
             view.finishTutorialRaycast.SetActive(true);
             view.pcTutorialText.text =
-              "Speed Up makes you lose <color=#15C9BD>Seconds</color> faster. If you run out of <color=#15C9BD>Seconds</color> or <color=#574646>Death</color> catches you, you lose. Good luck! <br> (Press anywhere to continue)";
+              "Speed Up makes you lose <color=#15C9BD>Seconds</color> faster. If you run out of <color=#15C9BD>Seconds</color> or <color=#735858>Death</color> catches you, you lose.\nGood luck! <br> (Press anywhere to continue)";
             break;
         }
       }
@@ -491,9 +498,9 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.GameHud
             view.timerTransform.SetSiblingIndex(4);
             view.timerTutorialArrow.SetActive(false);
             view.tiltLeftImage.SetActive(false);
-            view.pcTutorialText.text = "<color=#574646>Death</color> closes the distance when you Slow Down. Tilt your phone Right to Speed Up time and maintain your distance";
+            view.pcTutorialText.text = "<color=#735858>Death</color> closes the distance when you Slow Down. Tilt your phone Right to Speed Up time and maintain your distance";
             view.deathTutorialArrow.SetActive(true);
-            view.shadowTransform.SetAsLastSibling();
+            view.shadowTransform.SetSiblingIndex(transform.childCount - 3);
             view.tiltRightImage.SetActive(true);
             break;
           case 8:
@@ -502,7 +509,7 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.GameHud
             view.tiltRightImage.SetActive(false);
             view.finishTutorialRaycast.SetActive(true);
             view.pcTutorialText.text =
-              "Speed Up makes you lose <color=#15C9BD>Seconds</color> faster. If you run out of <color=#15C9BD>Seconds</color> or <color=#574646>Death</color> catches you, you lose. Good luck! <br> (Tap anywhere to continue)";
+              "Speed Up makes you lose <color=#15C9BD>Seconds</color> faster. If you run out of <color=#15C9BD>Seconds</color> or <color=#735858>Death</color> catches you, you lose.\nGood luck! <br> (Tap anywhere to continue)";
             break;
         }
       }
@@ -547,8 +554,10 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.GameHud
     
     public override void OnRemove()
     {
+      view.RemoveOptionsAction();
+      
       view.dispatcher.RemoveListener(GameHudEvent.Settings, OnSettings);
-      view.dispatcher.AddListener(GameHudEvent.FinishTutorial, OnFinishTutorial);
+      view.dispatcher.RemoveListener(GameHudEvent.FinishTutorial, OnFinishTutorial);
 
       dispatcher.RemoveListener(PlayerEvent.EnemyStartedMoving, StartShadowLoop);
       dispatcher.RemoveListener(PlayerEvent.EnemyStoppedMoving, StopShadowLoop);

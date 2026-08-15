@@ -2,6 +2,7 @@
 using Assets.Script.Runtime.Context.Menu.Scripts.Enum;
 using Assets.Script.Runtime.Context.Menu.Scripts.Model;
 using strange.extensions.mediation.impl;
+using UnityEngine;
 
 namespace Assets.Script.Runtime.Context.Menu.Scripts.View.InstructionsPanel
 {
@@ -20,6 +21,9 @@ namespace Assets.Script.Runtime.Context.Menu.Scripts.View.InstructionsPanel
     
     [Inject]
     public ISpeedModel speedModel { get; set; }
+    
+    [Inject]
+    public IPlayerModel playerModel { get; set; }
 
     public override void OnRegister()
     { 
@@ -27,9 +31,23 @@ namespace Assets.Script.Runtime.Context.Menu.Scripts.View.InstructionsPanel
       view.dispatcher.AddListener(InstructionsPanelEvent.Controls, OnControls);
     }
     
+    public override void OnInitialize()
+    {
+      view.SetOptionsAction();
+    }
+    
     private void OnClose()
-    { 
-      speedModel.Continue();
+    {
+      if (uiModel.openPanels.Count > 2)
+      {
+        return;
+      }
+
+      if (playerModel.tutorialActive && PlayerPrefs.GetInt(SettingKeys.CompletedTutorialSteps) == 0)
+      {
+        speedModel.Continue();
+      }
+      
       uiModel.ClosePanel(PanelKeys.InstructionsPanel);
     }
     
@@ -40,6 +58,8 @@ namespace Assets.Script.Runtime.Context.Menu.Scripts.View.InstructionsPanel
     
     public override void OnRemove()
     {
+      view.RemoveOptionsAction();
+      
       view.dispatcher.RemoveListener(InstructionsPanelEvent.Close, OnClose);
       view.dispatcher.RemoveListener(InstructionsPanelEvent.Controls, OnControls);
     }

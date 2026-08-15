@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Script.Runtime.Context.Game.Scripts.Enum;
 using Assets.Script.Runtime.Context.Game.Scripts.Model;
+using Assets.Script.Runtime.Context.Menu.Scripts.Enum;
 using strange.extensions.mediation.impl;
 using UnityEngine;
 using UnityEngine.UI;
@@ -51,7 +52,7 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.Background
       _skyRectTransform = view.skyRawImage.GetComponent<RectTransform>();
       _treeContainerRectTransform = view.treeContainerTransform.GetComponent<RectTransform>();
       _groundRectTransform = view.groundRawImage.GetComponent<RectTransform>();
-
+      
       Vector2 rect = new(_rectTransform.rect.width, _rectTransform.rect.height);
       _minWidth = rect.x / 5;
       _minHeight = rect.y / 3;
@@ -66,18 +67,22 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.Background
       StartCoroutine(_treeRoutine);
     }
 
-    public void FixedUpdate()
+    public void Update()
     {
       if (!playerModel.isAlive) return;
       
+      //view.debugText.text += "<br> " + playerModel.currentGameSpeed + " " + _groundRectTransform.lossyScale.x + " " + _groundRectTransform.rect.width;
+      
       ParallaxEffect(view.skyRawImage, _skyRectTransform, 0.2f);
       ParallaxEffect(view.groundRawImage, _groundRectTransform, 1f);
+      
+      //view.debugText.text += "<br> " + view.groundRawImage.uvRect.x;
 
       for (int i = _treeRectTransforms.Count - 1; i >= 0; i--)
       {
         RectTransform tree = _treeRectTransforms[i];
 
-        tree.Translate(new Vector2(-playerModel.currentGameSpeed / 2, 0), Space.World);
+        tree.Translate(new Vector2(-playerModel.currentGameSpeed / 2 * Time.deltaTime * 50, 0), Space.World);
 
         if (!(tree.anchoredPosition.x <= -_treeContainerRectTransform.rect.width - tree.sizeDelta.x)) continue;
 
@@ -89,7 +94,7 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.Background
     private void ParallaxEffect(RawImage image, RectTransform rectTransform, float speedFactor)
     {
       Rect rect = image.uvRect;
-      rect.x += playerModel.currentGameSpeed / rectTransform.lossyScale.x / rectTransform.rect.width * speedFactor;
+      rect.x += playerModel.currentGameSpeed / rectTransform.lossyScale.x / rectTransform.rect.width * speedFactor * Time.deltaTime * 50;
       if (rect.x > 1)
       {
         rect.x -= Mathf.Floor(rect.x);
@@ -148,6 +153,7 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.Background
 
     public override void OnRemove()
     {
+      dispatcher.RemoveListener(PlayerEvent.Died, OnDied);
       dispatcher.RemoveListener(PlayerEvent.DashStarted, UpdateParticle);
       dispatcher.RemoveListener(PlayerEvent.DashFinished, UpdateParticle);
       dispatcher.RemoveListener(PlayerEvent.CollectDash, UpdateParticle);

@@ -4,6 +4,7 @@ using Assets.Script.Runtime.Context.Game.Scripts.View.GameHud;
 using Assets.Script.Runtime.Context.Menu.Scripts.Enum;
 using Assets.Script.Runtime.Context.Menu.Scripts.Model;
 using strange.extensions.mediation.impl;
+using UnityEngine;
 
 namespace Assets.Script.Runtime.Context.Game.Scripts.View.Border
 {

@@ -115,7 +115,7 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.Spawner
         RectTransform spawnedRectTransform = spawnedObject.GetComponent<RectTransform>();
         spawnedObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(spawnedRectTransform.anchoredPosition.x, randomHeight);
         ObstacleView  obstacleView = spawnedObject.GetComponent<ObstacleView>();
-
+        
         obstacleView.tutorialIndex = completedSteps switch
         {
           0 => 0,

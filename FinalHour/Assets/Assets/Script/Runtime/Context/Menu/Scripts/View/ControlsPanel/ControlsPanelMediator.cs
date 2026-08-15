@@ -22,10 +22,10 @@ namespace Assets.Script.Runtime.Context.Menu.Scripts.View.ControlsPanel
     { 
       view.dispatcher.AddListener(ControlsPanelEvent.Close, OnClose);
     }
-
-
+    
     public override void OnInitialize()
     {
+      view.SetOptionsAction();
       view.mobileControls.SetActive(SystemInfo.deviceType == DeviceType.Handheld);
       view.pcControls.SetActive(SystemInfo.deviceType == DeviceType.Desktop);
     }
@@ -37,6 +37,8 @@ namespace Assets.Script.Runtime.Context.Menu.Scripts.View.ControlsPanel
 
     public override void OnRemove()
     {
+      view.RemoveOptionsAction();
+      
       view.dispatcher.RemoveListener(ControlsPanelEvent.Close, OnClose);
     }
   }

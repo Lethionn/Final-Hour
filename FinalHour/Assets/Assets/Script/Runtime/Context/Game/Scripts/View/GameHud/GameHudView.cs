@@ -4,6 +4,7 @@ using DG.Tweening;
 using strange.extensions.mediation.impl;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Assets.Script.Runtime.Context.Game.Scripts.View.GameHud
@@ -109,6 +110,28 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.GameHud
     public GameObject tiltLeftImage;
     
     public GameObject tiltRightImage;
+    
+    private PlayerInputActions _playerInputActions;
+
+    private InputAction _optionsAction;
+
+    protected override void Awake()
+    {
+      _playerInputActions = new PlayerInputActions();
+    }
+
+    public void SetOptionsAction()
+    {
+      _optionsAction = _playerInputActions.UI.Options;
+      _optionsAction.Enable();
+      _optionsAction.performed += (_ => { dispatcher.Dispatch(GameHudEvent.Settings); });
+    }
+    
+    public void RemoveOptionsAction()
+    {
+      _optionsAction.Disable();
+      _optionsAction.performed -= (_ => { dispatcher.Dispatch(GameHudEvent.Settings); });
+    }
     
     public void UpdateScore(int score)
     {
@@ -302,7 +325,11 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.GameHud
       Sequence sequence = DOTween.Sequence();
       sequence.Append(outOfSeconds.transform.DOBlendableLocalMoveBy(new Vector3(0, 50f, 0), 2));
       sequence.Join(outOfSeconds.DOFade(0f, 2).From(1f));
-      sequence.OnComplete((() => { outOfSecondsTween.Rewind(); }));
+      sequence.OnComplete((() =>
+      {
+        outOfSecondsTween.Rewind();
+        outOfSeconds.alpha = 0f;
+      }));
 
       outOfSecondsTween = sequence;
       outOfSecondsTween.Play();
@@ -312,7 +339,7 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.GameHud
     {
       dispatcher.Dispatch(GameHudEvent.Settings);
     }
-
+    
     public void OnFinishTutorial()
     {
       dispatcher.Dispatch(GameHudEvent.FinishTutorial);

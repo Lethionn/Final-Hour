@@ -20,9 +20,8 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.PlayerController
     public PlayerInput playerInput;
     public Animator playerAnimator;
     public GameObject dashParticle;
-    public GameObject deadParticle;
-    
-    private PlayerInputActions playerInputActions;
+
+    private PlayerInputActions _playerInputActions;
     public InputActionMap inputActionMap;
     private InputAction jump;
     private InputAction dash;
@@ -53,20 +52,15 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.PlayerController
     public Button crouchButton;
     public Button fireButton;
     public Button dashButton;
-    
-    public TextMeshProUGUI debugtext;
-
 
     protected override void Awake()
     {
-      playerInputActions = new PlayerInputActions();
+      _playerInputActions = new PlayerInputActions();
       deviceType = SystemInfo.deviceType;
     }
     
     private void EnableGyro()
     {
-      debugtext.text += "<br> Enable gyro";
-      
       if (accelActive)
       {
         return;
@@ -75,7 +69,6 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.PlayerController
       if (SystemInfo.supportsAccelerometer)
       {
         accelActive = true;
-        debugtext.text += "<br> Supports accel";
       }
       else
       {
@@ -103,40 +96,29 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.PlayerController
       {
         if (!accelActive)
         {
-          debugtext.text += "<br> neither accel or gyro active";
           yield break;
         }
         
-  
-        _rotation = Input.acceleration; 
-        debugtext.text += "<br> accel rotation= " + _rotation;
+        _rotation = Input.acceleration;
 
-        
-        switch (_rotation.x)
+        if (_rotation.x < -PlayerPrefs.GetFloat(SettingKeys.TiltSensitivity) && _speedState != SpeedState.Slow)
         {
-          case < -0.15f when _speedState != SpeedState.Slow:
-            debugtext.text += "<br> call slowdown";
-            OnSlowTime();
-            break;
-          case > 0.15f when _speedState != SpeedState.Fast:
-            debugtext.text += "<br> call speedup";
-            OnSpeedUpTime();
-            break;
-          case >= -0.15f and <= 0.15f when _speedState != SpeedState.Normal:
+          OnSlowTime();
+        }
+        else if (_rotation.x > PlayerPrefs.GetFloat(SettingKeys.TiltSensitivity) && _speedState != SpeedState.Fast)
+        {
+          OnSpeedUpTime();
+        }
+        else if (_rotation.x >= -PlayerPrefs.GetFloat(SettingKeys.TiltSensitivity) && _rotation.x <= PlayerPrefs.GetFloat(SettingKeys.TiltSensitivity) && _speedState != SpeedState.Normal 
+                 && PlayerPrefs.GetInt(SettingKeys.CompletedTutorialSteps) != 6 )
+        {
+          if (PlayerPrefs.GetInt(SettingKeys.CompletedTutorialSteps) == 5 || PlayerPrefs.GetInt(SettingKeys.CompletedTutorialSteps) == 7)
           {
-            debugtext.text += "<br> call normalspeed";
-            if (PlayerPrefs.GetInt(SettingKeys.CompletedTutorialSteps) == 5 || PlayerPrefs.GetInt(SettingKeys.CompletedTutorialSteps) == 7)
-            {
-              debugtext.text += "<br> normalspeedfortutor";
-              ReturnNormalSpeedTutorial();
-            }
-            else
-            {
-              debugtext.text += "<br> normalspeed";
-              ReturnNormalSpeed();
-            }
-
-            break;
+            ReturnNormalSpeedTutorial();
+          }
+          else
+          {
+            ReturnNormalSpeed();
           }
         }
 
@@ -218,11 +200,8 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.PlayerController
     {
       if (!speedUpTime.enabled)
       {
-        debugtext.text += "<br> speedup disabled";
         return;
       }
-      
-      debugtext.text += "<br> speedup";
       
       _speedState = SpeedState.Fast;
       dispatcher.Dispatch(PlayerControllerEvents.SpeedUpTime);
@@ -238,11 +217,8 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.PlayerController
     {
       if (!slowDownTime.enabled)
       {
-        debugtext.text += "<br> slowdowntime disabled";
         return;
       }
-      
-      debugtext.text += "<br> slowdown";
       
       _speedState = SpeedState.Slow;
       dispatcher.Dispatch(PlayerControllerEvents.SlowDownTime);
@@ -288,12 +264,12 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.PlayerController
     
     public void SetInputs()
     {
-      crouch = playerInputActions.Player.Crouch;
-      slowDownTime = playerInputActions.Player.SlowTime;
-      speedUpTime = playerInputActions.Player.SpeedUpTime;
-      jump = playerInputActions.Player.Jump;
-      fire = playerInputActions.Player.Fire;
-      dash = playerInputActions.Player.Dash;
+      crouch = _playerInputActions.Player.Crouch;
+      slowDownTime = _playerInputActions.Player.SlowTime;
+      speedUpTime = _playerInputActions.Player.SpeedUpTime;
+      jump = _playerInputActions.Player.Jump;
+      fire = _playerInputActions.Player.Fire;
+      dash = _playerInputActions.Player.Dash;
     }
     
     public void EnableAllInputs()
@@ -364,7 +340,6 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.PlayerController
     
     public void DisableInputsTutorial()
     {
-      debugtext.text += "<br> disable inputs for tutorial" + PlayerPrefs.GetInt(SettingKeys.CompletedTutorialSteps);
       if (deviceType == DeviceType.Handheld)
       {
         if (PlayerPrefs.GetInt(SettingKeys.CompletedTutorialSteps) > 3 && PlayerPrefs.GetInt(SettingKeys.CompletedTutorialSteps) < 8) 

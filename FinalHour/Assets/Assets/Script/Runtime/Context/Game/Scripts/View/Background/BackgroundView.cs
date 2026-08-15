@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Assets.Script.Runtime.Context.Game.Scripts.Model;
 using strange.extensions.mediation.impl;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 

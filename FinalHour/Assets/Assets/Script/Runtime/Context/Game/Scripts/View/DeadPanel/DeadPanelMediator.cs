@@ -2,6 +2,7 @@
 using Assets.Script.Runtime.Context.Game.Scripts.Model;
 using Assets.Script.Runtime.Context.Menu.Scripts.Enum;
 using strange.extensions.mediation.impl;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Script.Runtime.Context.Game.Scripts.View.DeadPanel
@@ -35,19 +36,20 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.DeadPanel
     private void OnDied()
     {
       view.score = playerModel.score;
+      
       view.SetState(true, playerModel.remainingTime <= 0);
-      view.ShowAd();
+      // view.ShowAd();
     }
 
     private void OnPlayAgain()
     {
-      view.HideAd();
+      //view.HideAd();
       dispatcher.Dispatch(GameEvent.Start);
     }
     
     private void OnMenu()
     {
-      view.HideAd();
+      //view.HideAd();
       SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
 

@@ -53,7 +53,11 @@ namespace Assets.Script.Runtime.Context.Menu.Scripts.View.OptionsPanel
     
     private void OnSettings()
     { 
+#if UNITY_STANDALONE || UNITY_WEBGL
       uiModel.OpenPanel(PanelKeys.SettingsPanel, transform.parent);
+#else
+      uiModel.OpenPanel(PanelKeys.SettingsPanelMobile, transform.parent);
+#endif
     }
     
     private void OnControls()

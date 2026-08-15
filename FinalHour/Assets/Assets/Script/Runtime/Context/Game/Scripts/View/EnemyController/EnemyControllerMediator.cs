@@ -66,6 +66,7 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.EnemyController
       yield return new WaitForEndOfFrame();
       enemyModel.spawnPosition = enemyPositionFromRight;
       enemyModel.currentPosition = enemyPositionFromRight;
+      view.deadParticle.SetActive(false);
     }
 
     private void UpdateModel()

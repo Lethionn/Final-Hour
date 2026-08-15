@@ -4,6 +4,7 @@ using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using strange.extensions.mediation.impl;
+using TMPro;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
@@ -121,6 +122,5 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.Obstacles
         yield return tween.WaitForCompletion();
       }
     }
-
   }
 }

@@ -63,15 +63,14 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.PlayerController
         playerModel.tutorialActive = false;
         PlayerPrefs.SetInt(SettingKeys.CompletedTutorialSteps, 9);
       }
-      
+
       view.SetColliders(false);
-      view.deadParticle.SetActive(false);
-      dispatcher.Dispatch(GameEvent.GameStarted);    
+      dispatcher.Dispatch(GameEvent.GameStarted);
       StartCoroutine(Off());
       speedModel.ReturnNormalSpeed();
-      
+
       view.SetInputs();
-      
+
       if (playerModel.tutorialActive)
       {
         view.DisableAllInputs();
@@ -83,39 +82,39 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.PlayerController
 
       StartCoroutine(SpeedUpGame());
     }
-    
+
     private IEnumerator Off()
     {
       view.ResetPosition();
       yield return new WaitForEndOfFrame();
-      playerModel.position = GameMechanicSettings.PlayerSpawnPosition.x - (view.playerBodyCollider.bounds.extents.x * view.playerBodyCollider.transform.localScale.x);;
+      playerModel.position = GameMechanicSettings.PlayerSpawnPosition.x - (view.playerBodyCollider.bounds.extents.x * view.playerBodyCollider.transform.localScale.x);
+      ;
     }
 
-      private IEnumerator SpeedUpGame()
+    private IEnumerator SpeedUpGame()
+    {
+      while (playerModel.trueGameSpeed < GameMechanicSettings.MaxGameSpeed && playerModel.isAlive)
       {
-        while (playerModel.trueGameSpeed < GameMechanicSettings.MaxGameSpeed && playerModel.isAlive)
+        if (speedModel.isPaused)
         {
-          if (speedModel.isPaused)
-          {
-            yield return new WaitUntil(() => !speedModel.isPaused);
-          }
-
-          yield return new WaitForSecondsRealtime(GameMechanicSettings.GameSpeedUpTime);
-
-          if (speedModel.isPaused)
-          {
-            yield return new WaitUntil(() => !speedModel.isPaused);
-          }
-
-          playerModel.ChangeTrueGameSpeed(GameMechanicSettings.GameSpeedUpAmount);
-
-          view.playerAnimator.SetFloat("speed", playerModel.trueGameSpeed / GameMechanicSettings.StartingGameSpeed);
+          yield return new WaitUntil(() => !speedModel.isPaused);
         }
+
+        yield return new WaitForSecondsRealtime(GameMechanicSettings.GameSpeedUpTime);
+
+        if (speedModel.isPaused)
+        {
+          yield return new WaitUntil(() => !speedModel.isPaused);
+        }
+
+        playerModel.ChangeTrueGameSpeed(GameMechanicSettings.GameSpeedUpAmount);
+
+        view.playerAnimator.SetFloat("speed", playerModel.trueGameSpeed / GameMechanicSettings.StartingGameSpeed);
       }
+    }
 
     private void OnDied()
     {
-      view.deadParticle.SetActive(true);
       speedModel.ReturnNormalSpeed();
 
       view.SetActionMapState(false);
@@ -145,18 +144,18 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.PlayerController
       {
         return;
       }
-      
-      if (!playerModel.tutorialActive)
+
+      switch (playerModel.tutorialActive)
       {
-        view.EnableAllInputs();
-      }
-      else if (playerModel.tutorialActive && (PlayerPrefs.GetInt(SettingKeys.CompletedTutorialSteps) == 5 || PlayerPrefs.GetInt(SettingKeys.CompletedTutorialSteps) == 7))
-      {
-        view.DisableInputsTutorial();
-      }
-      else
-      {
-        view.DisableAllInputs();
+        case false:
+          view.EnableAllInputs();
+          break;
+        case true when (PlayerPrefs.GetInt(SettingKeys.CompletedTutorialSteps) == 5 || PlayerPrefs.GetInt(SettingKeys.CompletedTutorialSteps) == 7):
+          view.DisableInputsTutorial();
+          break;
+        default:
+          view.DisableAllInputs();
+          break;
       }
     }
 
@@ -168,7 +167,7 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.PlayerController
       }
 
       CheckTutorialStep(0);
-      
+
       dispatcher.Dispatch(PlayerEvent.Jump);
       float posY = view.rectTransform.anchoredPosition.y;
 
@@ -179,15 +178,12 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.PlayerController
         {
           view.rectTransform.DOAnchorPosY(posY, GameMechanicSettings.JumpSpeed)
             .SetSpeedBased()
-            .SetEase(Ease.InQuad).OnComplete((() =>
-            {
-              dispatcher.Dispatch(PlayerEvent.JumpFinished);
-            }));
+            .SetEase(Ease.InQuad).OnComplete((() => { dispatcher.Dispatch(PlayerEvent.JumpFinished); }));
         });
 
       jump.Play();
     }
-    
+
     private void OnCrouchAction()
     {
       if (playerModel.isCrouching)
@@ -196,58 +192,55 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.PlayerController
       }
 
       CheckTutorialStep(1);
-      
+
       dispatcher.Dispatch(PlayerEvent.Crouch);
 
       playerModel.isCrouching = true;
       view.SetColliders(true);
       StartCoroutine(CrouchRoutine());
     }
-    
+
     private IEnumerator CrouchRoutine()
     {
       yield return new WaitForSeconds(GameMechanicSettings.CrouchDuration);
-      
+
       view.CrouchFinished();
       playerModel.isCrouching = false;
     }
-    
+
     private void OnCrouchFinished()
     {
       dispatcher.Dispatch(PlayerEvent.CrouchFinished);
     }
-    
+
     private void OnReturnNormalSpeed()
     {
       speedModel.ReturnNormalSpeed();
 
       if (!playerModel.tutorialActive || PlayerPrefs.GetInt(SettingKeys.CompletedTutorialSteps) != 6) return;
-      
-      view.debugtext.text += "<br> tutorial start normal speed" + playerModel.tutorialActive + PlayerPrefs.GetInt(SettingKeys.CompletedTutorialSteps);
+
       speedModel.Pause();
       dispatcher.Dispatch(GameEvent.TutorialStepStart);
     }
-    
+
     private void OnReturnNormalSpeedTutorial()
     {
       PlayerPrefs.SetInt(SettingKeys.CompletedTutorialSteps, PlayerPrefs.GetInt(SettingKeys.CompletedTutorialSteps) + 1);
-        
-      view.debugtext.text += "<br> tutorial start from normal speed tutor" + playerModel.tutorialActive + PlayerPrefs.GetInt(SettingKeys.CompletedTutorialSteps);
-      
+
       speedModel.ReturnNormalSpeed();
-      
+
       speedModel.Pause();
-      dispatcher.Dispatch(GameEvent.TutorialStepStart); 
+      dispatcher.Dispatch(GameEvent.TutorialStepStart);
     }
-    
+
     private void OnSpeedTutorial()
     {
       PlayerPrefs.SetInt(SettingKeys.CompletedTutorialSteps, PlayerPrefs.GetInt(SettingKeys.CompletedTutorialSteps) + 1);
-        
+
       speedModel.ReturnNormalSpeed();
-      
+
       speedModel.Pause();
-      dispatcher.Dispatch(GameEvent.TutorialStepStart); 
+      dispatcher.Dispatch(GameEvent.TutorialStepStart);
     }
 
     private void OnDashAction()
@@ -274,16 +267,22 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.PlayerController
     {
       playerModel.isDashing = true;
       dispatcher.Dispatch(PlayerEvent.DashStarted);
-      view.ChangeColor(new Color(0.4352942f, 1f, 1f, 0.75f));
+      DashVFX();
       view.dashParticle.SetActive(true);
       playerModel.ChangeGameSpeed(GameMechanicSettings.DashSpeed);
       yield return new WaitForSeconds(GameMechanicSettings.DashDuration);
       playerModel.ChangeGameSpeed(-GameMechanicSettings.DashSpeed);
       playerModel.isDashing = false;
-      view.ChangeColor(Color.white);
       view.dashParticle.SetActive(false);
       dispatcher.Dispatch(PlayerEvent.DashFinished);
       StartCoroutine(view.DashCooldown());
+    }
+
+    private void DashVFX()
+    {
+      view.spriteRenderer.DOKill();
+      view.ChangeColor(new Color(0.4352942f, 1f, 1f, 0.75f));
+      view.spriteRenderer.DOColor(Color.white, GameMechanicSettings.DashDuration + 1.5f);
     }
 
     private void OnFireBulletAction()
@@ -295,14 +294,14 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.PlayerController
       }
 
       CheckTutorialStep(2);
-      
+
       view.isFireReady = false;
 
       playerModel.ChangeRemainingTime(-GameMechanicSettings.FireCost);
       dispatcher.Dispatch(PlayerEvent.FireBullet, view.gameObject.transform);
       StartCoroutine(view.FireCooldown());
     }
-    
+
     private void OnCrashObstacle()
     {
       view.playerAnimator.SetTrigger("Hurt");
@@ -311,18 +310,18 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.PlayerController
     private void OnSlowDownTimeAction()
     {
       CheckTutorialStep(4);
-      
+
       speedModel.SlowDownTime();
     }
 
     private void OnSpeedUpTimeAction()
-    { 
+    {
       CheckTutorialStep(6);
-      
+
       speedModel.SpeedUpTime();
     }
-    
-    private void  OnCollectDash()
+
+    private void OnCollectDash()
     {
       StartCoroutine(CollectDashRoutine());
     }
@@ -337,17 +336,16 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.PlayerController
       view.isDashReady = false;
       StartCoroutine(CollectedDashTimer());
     }
-    
+
     private IEnumerator CollectedDashTimer()
     {
       playerModel.isDashing = true;
-      view.ChangeColor(new Color(0.4352942f, 1f, 1f, 0.75f));
+      DashVFX();
       view.dashParticle.SetActive(true);
       playerModel.ChangeGameSpeed(GameMechanicSettings.DashSpeed);
       yield return new WaitForSeconds(GameMechanicSettings.DashDuration);
       playerModel.ChangeGameSpeed(-GameMechanicSettings.DashSpeed);
       playerModel.isDashing = false;
-      view.ChangeColor(Color.white);
       view.dashParticle.SetActive(false);
       dispatcher.Dispatch(PlayerEvent.CollectedDashComplete);
       view.isDashReady = true;
@@ -356,7 +354,7 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.PlayerController
     private void CheckTutorialStep(int stepIndex)
     {
       if (!playerModel.tutorialActive || PlayerPrefs.GetInt(SettingKeys.CompletedTutorialSteps) != stepIndex) return;
-      
+
       PlayerPrefs.SetInt(SettingKeys.CompletedTutorialSteps, stepIndex + 1);
       speedModel.Continue();
       dispatcher.Dispatch(GameEvent.TutorialStepComplete);

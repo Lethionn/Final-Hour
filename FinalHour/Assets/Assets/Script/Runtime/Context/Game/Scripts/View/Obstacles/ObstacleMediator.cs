@@ -1,5 +1,4 @@
-﻿using System;
-using Assets.Script.Runtime.Context.Game.Scripts.Enum;
+﻿using Assets.Script.Runtime.Context.Game.Scripts.Enum;
 using Assets.Script.Runtime.Context.Game.Scripts.Model;
 using Assets.Script.Runtime.Context.Menu.Scripts.Enum;
 using DG.Tweening;
@@ -27,17 +26,19 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.Obstacles
 
     private bool _keepMoving = false;
 
+    private int count = 0;
+
     public override void OnRegister()
     {
       view.dispatcher.AddListener(ObstacleEvents.CrashWithPlayer, OnCrashWithPlayer);
       view.dispatcher.AddListener(ObstacleEvents.ObstacleIsBroken, OnObstacleIsBroken);
-      
+
       dispatcher.AddListener(PlayerEvent.Died, OnDied);
     }
 
     private void OnObstacleIsBroken()
     {
-      view.InstantiateObject(view.breakParticle);
+      view.InstantiateObject(view.breakParticle).transform.position = new Vector3(transform.position.x - 1, transform.position.y, transform.position.z);
       if (view.isDropTime)
       {
         GameObject timeAdder = view.InstantiateObject(view.timeAdder);
@@ -90,14 +91,15 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.Obstacles
       Destroy(view.gameObject);
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
       if (!playerModel.isAlive && !_keepMoving)
       {
         return;
       }
 
-      transform.Translate(new Vector2(-playerModel.currentGameSpeed*view.ownSpeedFactor, 0), Space.Self);
+      count++;
+      transform.Translate(new Vector2(-playerModel.currentGameSpeed*view.ownSpeedFactor*Time.deltaTime*50, 0), Space.Self);
 
       if ( PlayerPrefs.GetInt(SettingKeys.CompletedTutorialSteps) == view.tutorialIndex && view.tutorialIndex == 2 && view.rectTransform.anchoredPosition.x <= 1500)
       {
@@ -119,7 +121,7 @@ namespace Assets.Script.Runtime.Context.Game.Scripts.View.Obstacles
         _keepMoving = true;
       }
     }
-    
+
     public override void OnRemove()
     {
       if (view.activeRoutine != null)

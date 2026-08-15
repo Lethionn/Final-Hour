@@ -1,7 +1,6 @@
-﻿using Assets.Script.Runtime.Context.Menu.Scripts.View.OptionsPanel;
-using strange.extensions.mediation.impl;
+﻿using strange.extensions.mediation.impl;
 
-namespace Assets.Script.Runtime.Context.Menu.Scripts.View.SettingsPanel
+namespace Assets.Script.Runtime.Context.Menu.Scripts.View.OptionsPanel
 {
   public class OptionsPanelView : EventView
   {
