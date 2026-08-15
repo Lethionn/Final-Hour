@@ -21,26 +21,42 @@ MonoBehaviour:
     m_Address: bullet
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 583d5c030dcfd9d4b8c4f32817007572
     m_Address: InstructionsPanel
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bec2aefe6e9277343906f13833662c71
     m_Address: OptionsPanel
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 64ecbb240a8d8534684b2e0bb1d51de9
-    m_Address: SettingsPanel
+    m_Address: SettingsPanelMobile
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2cf2c2ea36679dc4f9c07829b56f923d
     m_Address: CreditsPanel
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fe3e8b08c2a86ee47888bf943b63cfbc
     m_Address: ControlsPanel
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 19a0ee559f27ac34abd6691beca39405
+    m_Address: SettingsPanel
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0bbf075742028b8439f23494cef6a8a3
+    m_Address: OptionsPanelWeb
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 905b84a0e77c66145a9f76e3bb7dc9ec, type: 2}
   m_SchemaSet:
